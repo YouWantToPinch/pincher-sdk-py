@@ -23,6 +23,9 @@ class Client(httpx.Client):
         self._refresh_token: str = ""
         self._auto_refresh: bool = auto_refresh
 
+    # import methods from organized modules
+    from ._requests_auth import user_token_refresh, user_token_revoke
+
     def base_url(self) -> str:
         if not self._base_url:
             return ""
@@ -47,7 +50,7 @@ class Client(httpx.Client):
         data: Unknown,
         token: str = "",
     ) -> Any:
-        url = self.resolve_url("/api" + destination)
+        url = self._resolve_url("/api" + destination)
         if not url:
             return None
 
@@ -89,7 +92,7 @@ class Client(httpx.Client):
                 except Exception as e:
                     raise e
             try:
-                self._handle_response(response)
+                return self._handle_response(response)
             except Exception as e:
                 raise e
 
@@ -107,7 +110,7 @@ class Client(httpx.Client):
         error_msg = response.text[:1024]
         raise RuntimeError(f"bad status code {status}: {error_msg}")
 
-    def resolve_url(self, destination: str) -> str | None:
+    def _resolve_url(self, destination: str) -> str | None:
         if self._parsed_base_url is None:
             raise Exception(
                 "refused to resovle destination url; client base url not set"
@@ -126,23 +129,6 @@ class Client(httpx.Client):
             raise Exception(f"refusing external URL host {u.netloc!r}")
 
         return str(self._parsed_base_url.join(destination))
-
-    def user_token_refresh(self):
-        try:
-            if self._refresh_token == "":
-                # TODO: log "Client directed to get new access token, but Refresh Token is empty."
-                raise Exception("refresh token is empty")
-        except Exception as e:
-            raise e
-
-        endpoint = "/refresh"
-
-        try:
-            access_token = self._do_request("POST", endpoint, {}, self._refresh_token)
-        except Exception as e:
-            raise e
-
-        self._token = access_token
 
 
 # ------------
