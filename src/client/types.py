@@ -1,3 +1,4 @@
+from enum import Enum
 from typing import Any
 import uuid
 from datetime import datetime
@@ -20,6 +21,16 @@ class User(Resource):
         self.username: str = data["username"]
 
 
+class BudgetResourceKind(Enum):
+    NONE = "NONE"
+    ACCOUNT = "ACCOUNT"
+    CATEGORY = "CATEGORY"
+    GROUP = "GROUP"
+    PAYEE = "PAYEE"
+    TRANSACTION = "TRANSACTION"
+    TRANSACTION_DETAIL = "TRANSACTION_DETAIL"
+
+
 class Budget(Resource):
     def __init__(self, data: dict[str, Any]):
         super().__init__(data)
@@ -31,6 +42,7 @@ class Budget(Resource):
 class BudgetResource(Resource):
     def __init__(self, data: dict[str, Any]):
         super().__init__(data)
+        self.kind: BudgetResourceKind | None = None
         self.budget_id: str = data["budget_id"]
         self.name: str = data["name"]
         self.notes: str = data["notes"]
@@ -39,17 +51,20 @@ class BudgetResource(Resource):
 class Group(BudgetResource):
     def __init__(self, data: dict[str, Any]):
         super().__init__(data)
+        self.kind = BudgetResourceKind.GROUP
 
 
 class Category(BudgetResource):
     def __init__(self, data: dict[str, Any]):
         super().__init__(data)
+        self.kind = BudgetResourceKind.CATEGORY
         self.group_id: uuid.UUID = data["group_id"]
 
 
 class Account(BudgetResource):
     def __init__(self, data: dict[str, Any]):
         super().__init__(data)
+        self.kind = BudgetResourceKind.ACCOUNT
         self.account_type = data["account_type"]
         self.is_deleted = data["is_deleted"]
 
@@ -57,6 +72,7 @@ class Account(BudgetResource):
 class Transaction(BudgetResource):
     def __init__(self, data: dict[str, Any]):
         super().__init__(data)
+        self.kind = BudgetResourceKind.TRANSACTION
         self.transaction_date = datetime.strptime(data["transaction_date"], "%m/%d;%Y")
         self.logger_id: uuid.UUID = data["logger_id"]
         self.account_id: uuid.UUID = data["account_id"]
@@ -73,8 +89,9 @@ class TransactionSplit:
         self.amount: int = data["amount"]
 
 
-class TransactionDetail:
+class TransactionDetail(BudgetResource):
     def __init__(self, data: dict[str, Any]):
+        self.kind = BudgetResourceKind.TRANSACTION_DETAIL
         self.transaction_date = datetime.strptime(data["transaction_date"], "%m/%d;%Y")
         self.id: uuid.UUID = data["id"]
         self.splits: dict[str, int] = data["splits"]
