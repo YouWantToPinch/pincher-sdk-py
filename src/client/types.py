@@ -108,6 +108,7 @@ class TransactionDetail(BudgetResource):
 class Payee(BudgetResource):
     def __init__(self, data: dict[str, Any]):
         super().__init__(data)
+        self.kind = BudgetResourceKind.PAYEE
 
 
 class CategoryReport:
