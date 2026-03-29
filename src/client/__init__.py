@@ -5,7 +5,7 @@ import jwt
 from datetime import datetime, timezone
 
 
-class Client(httpx.Client):
+class Client(httpx.AsyncClient):
     def __init__(
         self,
         base_url: str,
@@ -42,7 +42,7 @@ class Client(httpx.Client):
         # TODO: log f"client base URL was set: {self._base_url}"
         return
 
-    def _do_request(
+    async def _do_request(
         self,
         method: str,
         destination: str,
@@ -69,7 +69,7 @@ class Client(httpx.Client):
                 method, destination, data=data, headers=headers
             )
 
-            response = self._send_single_request(request)
+            response = await self._send_single_request(request)
 
             if not self._auto_refresh:
                 break
