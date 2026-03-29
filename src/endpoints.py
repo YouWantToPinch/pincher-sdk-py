@@ -18,7 +18,7 @@ from src.formatting_verbs import interp_str_verbs
 
 # These base URLs are used by the Client's _do_request method
 
-defaultBaseURL = "http://localhost:8080"
+default_base_url = "http://localhost:8080"
 
 S_VERB = "/%s"
 
@@ -59,109 +59,109 @@ URL_BUDGET_MONTH_CATEGORIES = URL_BUDGET_MONTH + "/categories"
 URL_BUDGET_MONTH_CATEGORY = URL_BUDGET_MONTH_CATEGORIES + S_VERB
 
 
-def EndpointServerReadiness() -> str:
+def endpoint_server_readiness() -> str:
     return URL_HEALTH_Z
 
 
-def EndpointLogin() -> str:
+def endpoint_login() -> str:
     return URL_USER_TOKEN_LOGIN
 
 
-def EndpointRefresh() -> str:
+def endpoint_refresh() -> str:
     return URL_USER_TOKEN_REFRESH
 
 
-def EndpointRevoke() -> str:
+def endpoint_revoke() -> str:
     return URL_USER_TOKEN_REVOKE
 
 
-def EndpointUsers() -> str:
+def endpoint_users() -> str:
     return URL_USERS
 
 
-def EndpointBudgets() -> str:
+def endpoint_budgets() -> str:
     return URL_BUDGETS
 
 
-def EndpointBudget(bID: str) -> str:
-    return interp_str_verbs(URL_BUDGET, bID)
+def endpoint_budget(b_id: str) -> str:
+    return interp_str_verbs(URL_BUDGET, b_id)
 
 
-def EndpointBudgetCapital(bID: str) -> str:
-    return interp_str_verbs(URL_BUDGET_CAPITAL, bID)
+def endpoint_budget_capital(b_id: str) -> str:
+    return interp_str_verbs(URL_BUDGET_CAPITAL, b_id)
 
 
-def EndpointBudgetMembers(bID: str) -> str:
-    return interp_str_verbs(URL_BUDGET_MEMBERS, bID)
+def endpoint_budget_members(b_id: str) -> str:
+    return interp_str_verbs(URL_BUDGET_MEMBERS, b_id)
 
 
-def EndpointBudgetMember(bID: str, mID: str) -> str:
-    return interp_str_verbs(URL_BUDGET_MEMBER, bID, mID)
+def endpoint_budget_member(b_id: str, m_id: str) -> str:
+    return interp_str_verbs(URL_BUDGET_MEMBER, b_id, m_id)
 
 
-def EndpointBudgetGroups(bID: str) -> str:
-    return interp_str_verbs(URL_BUDGET_GROUPS, bID)
+def endpoint_budget_groups(b_id: str) -> str:
+    return interp_str_verbs(URL_BUDGET_GROUPS, b_id)
 
 
-def EndpointBudgetGroup(bID: str, gID: str) -> str:
-    return interp_str_verbs(URL_BUDGET_GROUP, bID, gID)
+def endpoint_budget_group(b_id: str, g_id: str) -> str:
+    return interp_str_verbs(URL_BUDGET_GROUP, b_id, g_id)
 
 
-def EndpointBudgetCategories(bID: str) -> str:
-    return interp_str_verbs(URL_BUDGET_CATEGORIES, bID)
+def endpoint_budget_categories(b_id: str) -> str:
+    return interp_str_verbs(URL_BUDGET_CATEGORIES, b_id)
 
 
-def EndpointBudgetCategory(bID: str, cID: str) -> str:
-    return interp_str_verbs(URL_BUDGET_CATEGORY, bID, cID)
+def endpoint_budget_category(b_id: str, c_id: str) -> str:
+    return interp_str_verbs(URL_BUDGET_CATEGORY, b_id, c_id)
 
 
-def EndpointBudgetPayees(bID: str) -> str:
-    return interp_str_verbs(URL_BUDGET_PAYEES, bID)
+def endpoint_budget_payees(b_id: str) -> str:
+    return interp_str_verbs(URL_BUDGET_PAYEES, b_id)
 
 
-def EndpointBudgetPayee(bID: str, pID: str) -> str:
-    return interp_str_verbs(URL_BUDGET_PAYEE, bID, pID)
+def endpoint_budget_payee(b_id: str, p_id: str) -> str:
+    return interp_str_verbs(URL_BUDGET_PAYEE, b_id, p_id)
 
 
-def EndpointBudgetAccounts(bID: str) -> str:
-    return interp_str_verbs(URL_BUDGET_ACCOUNTS, bID)
+def endpoint_budget_accounts(b_id: str) -> str:
+    return interp_str_verbs(URL_BUDGET_ACCOUNTS, b_id)
 
 
-def EndpointBudgetAccount(bID: str, aID: str) -> str:
-    return interp_str_verbs(URL_BUDGET_ACCOUNT, bID, aID)
+def endpoint_budget_account(b_id: str, a_id: str) -> str:
+    return interp_str_verbs(URL_BUDGET_ACCOUNT, b_id, a_id)
 
 
-def EndpointBudgetAccountCapital(bID: str, aID: str) -> str:
-    return interp_str_verbs(URL_BUDGET_ACCOUNT_CAPITAL, bID, aID)
+def endpoint_budget_account_capital(b_id: str, a_id: str) -> str:
+    return interp_str_verbs(URL_BUDGET_ACCOUNT_CAPITAL, b_id, a_id)
 
 
-def EndpointBudgetTransactions(bID: str) -> str:
-    return interp_str_verbs(URL_BUDGET_TRANSACTIONS, bID)
+def endpoint_budget_transactions(b_id: str) -> str:
+    return interp_str_verbs(URL_BUDGET_TRANSACTIONS, b_id)
 
 
-def EndpointBudgetTransaction(bID: str, tID: str) -> str:
-    return interp_str_verbs(URL_BUDGET_TRANSACTION, bID, tID)
+def endpoint_budget_transaction(b_id: str, t_id: str) -> str:
+    return interp_str_verbs(URL_BUDGET_TRANSACTION, b_id, t_id)
 
 
-def EndpointBudgetTransactionsDetails(bID: str) -> str:
-    return interp_str_verbs(URL_BUDGET_TRANSACTIONS_DETAILS, bID)
+def endpoint_budget_transactions_details(b_id: str) -> str:
+    return interp_str_verbs(URL_BUDGET_TRANSACTIONS_DETAILS, b_id)
 
 
-def EndpointBudgetTransactionDetails(bID: str, tID: str) -> str:
-    return interp_str_verbs(URL_BUDGET_TRANSACTION_DETAILS, bID, tID)
+def endpoint_budget_transaction_details(b_id: str, t_id: str) -> str:
+    return interp_str_verbs(URL_BUDGET_TRANSACTION_DETAILS, b_id, t_id)
 
 
-def EndpointBudgetTransactionSplits(bID: str, tID: str) -> str:
-    return interp_str_verbs(URL_BUDGET_TRANSACTION_SPLITS, bID, tID)
+def endpoint_budget_transaction_splits(b_id: str, t_id: str) -> str:
+    return interp_str_verbs(URL_BUDGET_TRANSACTION_SPLITS, b_id, t_id)
 
 
-def EndpointBudgetMonth(bID: str, mID: str) -> str:
-    return interp_str_verbs(URL_BUDGET_MONTH, bID, mID)
+def endpoint_budget_month(b_id: str, m_id: str) -> str:
+    return interp_str_verbs(URL_BUDGET_MONTH, b_id, m_id)
 
 
-def EndpointBudgetMonthCategories(bID: str, mID: str) -> str:
-    return interp_str_verbs(URL_BUDGET_MONTH_CATEGORIES, bID, mID)
+def endpoint_budget_month_categories(b_id: str, m_id: str) -> str:
+    return interp_str_verbs(URL_BUDGET_MONTH_CATEGORIES, b_id, m_id)
 
 
-def EndpointBudgetMonthCategory(bID: str, mID, cID: str) -> str:
-    return interp_str_verbs(URL_BUDGET_MONTH_CATEGORY, bID, mID, cID)
+def endpoint_budget_month_category(b_id: str, m_id, c_id: str) -> str:
+    return interp_str_verbs(URL_BUDGET_MONTH_CATEGORY, b_id, m_id, c_id)
