@@ -1,5 +1,4 @@
 from typing import Any
-from ty_extensions import Unknown
 import httpx
 import json
 import jwt
@@ -47,7 +46,7 @@ class Client(httpx.Client):
         self,
         method: str,
         destination: str,
-        data: Unknown,
+        data: Any,
         token: str = "",
     ) -> Any:
         url = self._resolve_url("/api" + destination)
