@@ -360,9 +360,9 @@ wheels = [
 ]
 
 [[package]]
-name = "pincher-sdk-py"
-version = "0.1.0a1"
-source = { virtual = "." }
+name = "pincher-sdk"
+version = "0.1.1a1"
+source = { editable = "." }
 dependencies = [
     { name = "httpx" },
     { name = "pyjwt" },
