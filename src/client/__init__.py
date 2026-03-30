@@ -10,9 +10,8 @@ class Client(httpx.AsyncClient):
         self,
         cache: Cache,
         base_url: str,
-        timeout: int,
-        cache_interval: int,
         auto_refresh: bool = False,
+        timeout: int = 10,
     ) -> None:
         super().__init__(base_url=base_url)
 
@@ -22,6 +21,7 @@ class Client(httpx.AsyncClient):
         self._token: str = ""
         self._refresh_token: str = ""
         self._auto_refresh: bool = auto_refresh
+        self.timeout: float = timeout
 
         try:
             self.set_base_url(base_url)
@@ -72,7 +72,11 @@ class Client(httpx.AsyncClient):
                 headers["Authorization"] = f"Bearer {current_token}"
 
             request = self.build_request(
-                method, destination, json=json_data, headers=headers
+                method,
+                destination,
+                json=json_data,
+                headers=headers,
+                timeout=self.timeout,
             )
 
             response = await self._send_single_request(request)

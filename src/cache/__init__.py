@@ -62,7 +62,7 @@ class BudgetCache:
 
 
 class Cache:
-    def __init__(self, capacity: int, ttl_seconds: int):
+    def __init__(self, capacity: int = 100, ttl_seconds: int = 60 * 5):
         self.entries: OrderedDict[str, tuple[BudgetCache, float]] = OrderedDict()
         self.capacity = capacity
         self.ttl = ttl_seconds
