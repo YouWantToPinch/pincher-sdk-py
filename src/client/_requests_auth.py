@@ -1,7 +1,8 @@
+from client import Client
 from .types import User
 
 
-def user_token_refresh(self, with_user: bool = False) -> User | None:
+async def user_token_refresh(self: Client, with_user: bool = False) -> User | None:
     try:
         if self._refresh_token == "":
             # TODO: log "Client directed to get new access token, but Refresh Token is empty."
@@ -13,7 +14,7 @@ def user_token_refresh(self, with_user: bool = False) -> User | None:
     endpoint = "/refresh" + query
 
     try:
-        data = self._do_request("POST", endpoint, {}, self._refresh_token)
+        data = await self._do_request("POST", endpoint, {}, self._refresh_token)
     except Exception as e:
         raise e
 
@@ -23,7 +24,7 @@ def user_token_refresh(self, with_user: bool = False) -> User | None:
         return User(data)
 
 
-def user_token_revoke(self):
+async def user_token_revoke(self: Client):
     try:
         if self._refresh_token == "":
             # TODO: log "Client directed to get new access token, but Refresh Token is empty."
@@ -33,7 +34,7 @@ def user_token_revoke(self):
 
     endpoint = "/revoke"
     try:
-        self._do_request("POST", endpoint, {}, "")
+        await self._do_request("POST", endpoint, {}, self._refresh_token)
     except Exception as e:
         raise e
 
