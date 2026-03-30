@@ -110,7 +110,8 @@ class Client(httpx.AsyncClient):
         destination: str,
         json_data: dict | None,
         token: str = "",
-    ) -> Any:
+        handle_response: bool = True,
+    ) -> Any | httpx.Response:
         url = self._resolve_url("/api" + destination)
         if not url:
             return None
@@ -156,10 +157,14 @@ class Client(httpx.AsyncClient):
                     continue
                 except Exception as e:
                     raise e
-            try:
-                return self._handle_response(response)
-            except Exception as e:
-                raise e
+            else:
+                break
+        if not handle_response:
+            return response
+        try:
+            return self._handle_response(response)
+        except Exception as e:
+            raise e
 
     def _handle_response(self, response: httpx.Response) -> Any:
         status = response.status_code
