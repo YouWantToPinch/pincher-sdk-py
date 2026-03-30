@@ -41,7 +41,7 @@ async def budget_transactions(self: Client, b_id: str, t_id: str) -> list[Transa
         transactions = await self._do_request("GET", endpoint, None, self._token)
     except Exception as e:
         raise e
-    return transactions
+    return transactions.data
 
 
 async def budget_transaction_details(self: Client, b_id: str, t_id: str) -> Transaction:
@@ -61,7 +61,7 @@ async def budget_transactions_details(
         transactions = await self._do_request("GET", endpoint, None, self._token)
     except Exception as e:
         raise e
-    return transactions
+    return transactions.data
 
 
 async def budget_transaction_update(

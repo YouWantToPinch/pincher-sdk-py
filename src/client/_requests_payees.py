@@ -33,7 +33,7 @@ async def budget_payees(self: Client, b_id: str, p_id: str) -> list[Payee]:
         payees = await self._do_request("GET", endpoint, None, self._token)
     except Exception as e:
         raise e
-    return payees
+    return payees.data
 
 
 async def budget_payee_update(

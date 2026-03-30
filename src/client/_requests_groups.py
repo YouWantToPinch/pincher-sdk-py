@@ -5,7 +5,6 @@ from endpoints import endpoint_budget_groups, endpoint_budget_group
 from client.payloads import (
     BudgetGroupCreateData,
     BudgetGroupUpdateData,
-    BudgetPayeeDeleteData,
 )
 
 
@@ -33,7 +32,7 @@ async def budget_groups(self: Client, b_id: str, g_id: str) -> list[Group]:
         groups = await self._do_request("GET", endpoint, None, self._token)
     except Exception as e:
         raise e
-    return groups
+    return groups.data
 
 
 async def budget_group_update(

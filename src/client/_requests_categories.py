@@ -34,7 +34,7 @@ async def budget_categories(self: Client, b_id: str, c_id: str) -> list[Category
         categories = await self._do_request("GET", endpoint, None, self._token)
     except Exception as e:
         raise e
-    return categories
+    return categories.data
 
 
 async def budget_category_update(
