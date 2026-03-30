@@ -12,7 +12,7 @@ from client.payloads import (
 async def budget_payee_create(self: Client, b_id: str, data: BudgetPayeeCreateData):
     endpoint = endpoint_budget_payees(b_id)
     try:
-        payee = await self._do_request("POST", endpoint, data, self._token)
+        payee = await self._do_request("POST", endpoint, data._asdict(), self._token)
     except Exception as e:
         raise e
     self.cache.set(ResourceCacheEntry(payee, endpoint), b_id)
@@ -41,7 +41,7 @@ async def budget_payee_update(
 ):
     endpoint = endpoint_budget_payee(b_id, p_id)
     try:
-        await self._do_request("PUT", endpoint, data, self._token)
+        await self._do_request("PUT", endpoint, data._asdict(), self._token)
         self.budget_payee(b_id, p_id)  # type: ignore
     except Exception as e:
         raise e
@@ -55,7 +55,7 @@ async def budget_payee_delete(
 ):
     endpoint = endpoint_budget_payee(b_id, p_id)
     try:
-        await self._do_request("DELETE", endpoint, data, self._token)
+        await self._do_request("DELETE", endpoint, data._asdict(), self._token)
         self.cache.delete(b_id, p_id, BudgetResourceKind.PAYEE)
     except Exception as e:
         raise e

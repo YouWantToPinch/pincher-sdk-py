@@ -11,7 +11,7 @@ from client.payloads import (
 async def budget_group_create(self: Client, b_id: str, data: BudgetGroupCreateData):
     endpoint = endpoint_budget_groups(b_id)
     try:
-        group = await self._do_request("POST", endpoint, data, self._token)
+        group = await self._do_request("POST", endpoint, data._asdict(), self._token)
     except Exception as e:
         raise e
     self.cache.set(ResourceCacheEntry(group, endpoint), b_id)
@@ -40,7 +40,7 @@ async def budget_group_update(
 ):
     endpoint = endpoint_budget_group(b_id, g_id)
     try:
-        await self._do_request("PUT", endpoint, data, self._token)
+        await self._do_request("PUT", endpoint, data._asdict(), self._token)
         self.budget_group(b_id, g_id)  # type: ignore
     except Exception as e:
         raise e

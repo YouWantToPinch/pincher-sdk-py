@@ -18,7 +18,9 @@ async def budget_transaction_create(
 ):
     endpoint = endpoint_budget_transactions(b_id)
     try:
-        transaction = await self._do_request("POST", endpoint, data, self._token)
+        transaction = await self._do_request(
+            "POST", endpoint, data._asdict(), self._token
+        )
         self.cache.set(ResourceCacheEntry(transaction, endpoint), b_id)
         # retrieve & cache the detailed version as well
         self.budget_transaction_details(b_id, str(transaction.id))  # type: ignore
@@ -69,7 +71,7 @@ async def budget_transaction_update(
 ):
     endpoint = endpoint_budget_transaction(b_id, t_id)
     try:
-        await self._do_request("PUT", endpoint, data, self._token)
+        await self._do_request("PUT", endpoint, data._asdict(), self._token)
         self.budget_transaction(b_id, t_id)  # type: ignore
         self.budget_transaction_details(b_id, t_id)  # type: ignore
     except Exception as e:

@@ -13,7 +13,7 @@ async def budget_category_create(
 ):
     endpoint = endpoint_budget_categories(b_id)
     try:
-        category = await self._do_request("POST", endpoint, data, self._token)
+        category = await self._do_request("POST", endpoint, data._asdict(), self._token)
     except Exception as e:
         raise e
     self.cache.set(ResourceCacheEntry(category, endpoint), b_id)
@@ -42,7 +42,7 @@ async def budget_category_update(
 ):
     endpoint = endpoint_budget_category(b_id, c_id)
     try:
-        await self._do_request("PUT", endpoint, data, self._token)
+        await self._do_request("PUT", endpoint, data._asdict(), self._token)
         self.budget_category(b_id, c_id)  # type: ignore
     except Exception as e:
         raise e

@@ -52,7 +52,7 @@ class Client(httpx.AsyncClient):
         self,
         method: str,
         destination: str,
-        json_data: dict,
+        json_data: dict | None,
         token: str = "",
     ) -> Any:
         url = self._resolve_url("/api" + destination)
