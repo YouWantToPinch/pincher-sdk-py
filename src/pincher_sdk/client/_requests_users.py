@@ -10,6 +10,7 @@ from ._payloads import (
     UserCreateData,
     UserUpdateData,
     UserDeleteData,
+    UserLoginData,
 )
 
 
@@ -24,10 +25,10 @@ async def user_create(self: "Client", data: UserCreateData):
     )
 
 
-async def user_login(self: "Client") -> User:
+async def user_login(self: "Client", data: UserLoginData) -> User:
     endpoint = endpoint_login()
     try:
-        login = await self._do_request("POST", endpoint, None, self._token)
+        login = await self._do_request("POST", endpoint, data._asdict(), self._token)
         self._token = login.token
         self._refresh_token = login.refresh_token
     except Exception as e:
