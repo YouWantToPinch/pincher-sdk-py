@@ -87,7 +87,7 @@ class Cache:
 
             # Refresh position (LRU logic)
             self.entries.move_to_end(budget_id)
-            if not resource_kind or resource_kind is BudgetResourceKind.NONE:
+            if not resource_id or resource_kind is BudgetResourceKind.NONE:
                 return budget_cache.entry.data
             if not resource_id:
                 return None
@@ -140,3 +140,31 @@ class Cache:
 
                 if len(self.entries) > self.capacity:
                     self.entries.popitem(last=False)
+
+    def delete(
+        self,
+        budget_id,
+        resource_id: str = "",
+        resource_kind: BudgetResourceKind = BudgetResourceKind.NONE,
+    ):
+        try:
+            if budget_id not in self.entries:
+                return
+            if not resource_id and resource_kind is BudgetResourceKind.NONE:
+                # only assume budget cache deletion if neither resource
+                # parameter is supplied an argument (having only one
+                # signifies unclear intensions and therefore warrants an error)
+                self.entries.pop(resource_id)
+                return
+            if resource_id and resource_kind is not BudgetResourceKind.NONE:
+                budget_cache, budget_cache_exp_time = self.entries[budget_id]
+                subcache = budget_cache.get_subcache(resource_kind)
+                if subcache is None:
+                    return
+                subcache.pop(resource_id)
+            else:
+                if resource_id:
+                    raise ValueError("Cache.delete: resource id provided without kind")
+                raise ValueError("Cache.delete: resource kind provided without id")
+        except ValueError as e:
+            raise e
