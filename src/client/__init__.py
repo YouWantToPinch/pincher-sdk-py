@@ -29,7 +29,58 @@ class Client(httpx.AsyncClient):
             raise e
 
     # import methods from organized modules
+    from ._requests_accounts import (
+        budget_account_create,
+        budget_account,
+        budget_accounts,
+        budget_account_update,
+        budget_account_restore,
+        budget_account_delete,
+    )
     from ._requests_auth import user_token_refresh, user_token_revoke
+    from ._requests_budgets import (
+        budget_create,
+        budget,
+        budgets,
+        budget_update,
+        budget_delete,
+    )
+    from ._requests_categories import (
+        budget_category_create,
+        budget_category,
+        budget_categories,
+        budget_category_update,
+        budget_category_delete,
+    )
+    from ._requests_groups import (
+        budget_group_create,
+        budget_group,
+        budget_groups,
+        budget_group_update,
+        budget_group_delete,
+    )
+    from ._requests_payees import (
+        budget_payee_create,
+        budget_payee,
+        budget_payees,
+        budget_payee_update,
+        budget_payee_delete,
+    )
+    from ._requests_txns import (
+        budget_transaction_create,
+        budget_transaction,
+        budget_transactions,
+        budget_transaction_details,
+        budget_transactions_details,
+        budget_transaction_update,
+        budget_transaction_delete,
+    )
+    from ._requests_users import (
+        user_create,
+        user_login,
+        user_update,
+        user_delete,
+    )
 
     def base_url(self) -> str:
         if not self._base_url:
