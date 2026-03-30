@@ -52,7 +52,7 @@ class Client(httpx.AsyncClient):
         self,
         method: str,
         destination: str,
-        data: Any,
+        json_data: dict,
         token: str = "",
     ) -> Any:
         url = self._resolve_url("/api" + destination)
@@ -72,7 +72,7 @@ class Client(httpx.AsyncClient):
                 headers["Authorization"] = f"Bearer {current_token}"
 
             request = self.build_request(
-                method, destination, data=data, headers=headers
+                method, destination, json=json_data, headers=headers
             )
 
             response = await self._send_single_request(request)
