@@ -1,6 +1,5 @@
 from client.types import Budget, BudgetResourceKind, BudgetResource
 from collections import OrderedDict
-from datetime import datetime
 from src.client.types import Resource
 import time
 from threading import Lock
@@ -11,12 +10,11 @@ class ResourceCacheEntry:
         self,
         data: Resource,
         destination_url: str,
-        created_at: datetime,
         protected: bool = False,
     ) -> None:
         self.data: Resource = data
         self.destination_url: str = destination_url
-        self.created_at = created_at
+        self.created_at = time.time()
         self.protected = protected
 
 
