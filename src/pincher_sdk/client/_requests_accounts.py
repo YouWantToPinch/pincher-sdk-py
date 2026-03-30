@@ -1,15 +1,21 @@
-from client.types import Account, BudgetResourceKind
-from cache import ResourceCacheEntry
-from client import Client
-from endpoints import endpoint_budget_accounts, endpoint_budget_account
-from client.payloads import (
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from pincher_sdk import Client
+
+from pincher_sdk.types import Account, BudgetResourceKind
+from pincher_sdk.cache import ResourceCacheEntry
+from pincher_sdk.endpoints import endpoint_budget_accounts, endpoint_budget_account
+from ._payloads import (
     BudgetAccountCreateData,
     BudgetAccountUpdateData,
     BudgetAccountDeleteData,
 )
 
 
-async def budget_account_create(self: Client, b_id: str, data: BudgetAccountCreateData):
+async def budget_account_create(
+    self: "Client", b_id: str, data: BudgetAccountCreateData
+):
     endpoint = endpoint_budget_accounts(b_id)
     try:
         account = await self._do_request("POST", endpoint, data._asdict(), self._token)
@@ -18,7 +24,7 @@ async def budget_account_create(self: Client, b_id: str, data: BudgetAccountCrea
     self.cache.set(ResourceCacheEntry(account, endpoint), b_id)
 
 
-async def budget_account(self: Client, b_id: str, a_id: str) -> Account:
+async def budget_account(self: "Client", b_id: str, a_id: str) -> Account:
     endpoint = endpoint_budget_account(b_id, a_id)
     try:
         account = await self._do_request("GET", endpoint, None, self._token)
@@ -27,7 +33,7 @@ async def budget_account(self: Client, b_id: str, a_id: str) -> Account:
     return account
 
 
-async def budget_accounts(self: Client, b_id: str, a_id: str) -> list[Account]:
+async def budget_accounts(self: "Client", b_id: str, a_id: str) -> list[Account]:
     endpoint = endpoint_budget_accounts(b_id)
     try:
         accounts = await self._do_request("GET", endpoint, None, self._token)
@@ -37,7 +43,7 @@ async def budget_accounts(self: Client, b_id: str, a_id: str) -> list[Account]:
 
 
 async def budget_account_update(
-    self: Client, b_id: str, a_id: str, data: BudgetAccountUpdateData
+    self: "Client", b_id: str, a_id: str, data: BudgetAccountUpdateData
 ):
     endpoint = endpoint_budget_account(b_id, a_id)
     try:
@@ -47,7 +53,7 @@ async def budget_account_update(
         raise e
 
 
-async def budget_account_restore(self: Client, b_id: str, a_id: str):
+async def budget_account_restore(self: "Client", b_id: str, a_id: str):
     endpoint = endpoint_budget_account(b_id, a_id)
     try:
         await self._do_request("PATCH", endpoint, None, self._token)
@@ -57,7 +63,7 @@ async def budget_account_restore(self: Client, b_id: str, a_id: str):
 
 
 async def budget_account_delete(
-    self: Client, b_id: str, a_id: str, data: BudgetAccountDeleteData
+    self: "Client", b_id: str, a_id: str, data: BudgetAccountDeleteData
 ):
     endpoint = endpoint_budget_account(b_id, a_id)
     try:

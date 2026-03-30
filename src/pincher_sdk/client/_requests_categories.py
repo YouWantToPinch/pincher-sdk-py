@@ -1,15 +1,19 @@
-from client.types import Category, BudgetResourceKind
-from cache import ResourceCacheEntry
-from client import Client
-from endpoints import endpoint_budget_categories, endpoint_budget_category
-from client.payloads import (
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from pincher_sdk import Client
+
+from pincher_sdk.types import Category, BudgetResourceKind
+from pincher_sdk.cache import ResourceCacheEntry
+from pincher_sdk.endpoints import endpoint_budget_categories, endpoint_budget_category
+from ._payloads import (
     BudgetCategoryCreateData,
     BudgetCategoryUpdateData,
 )
 
 
 async def budget_category_create(
-    self: Client, b_id: str, data: BudgetCategoryCreateData
+    self: "Client", b_id: str, data: BudgetCategoryCreateData
 ):
     endpoint = endpoint_budget_categories(b_id)
     try:
@@ -19,7 +23,7 @@ async def budget_category_create(
     self.cache.set(ResourceCacheEntry(category, endpoint), b_id)
 
 
-async def budget_category(self: Client, b_id: str, c_id: str) -> Category:
+async def budget_category(self: "Client", b_id: str, c_id: str) -> Category:
     endpoint = endpoint_budget_category(b_id, c_id)
     try:
         category = await self._do_request("GET", endpoint, None, self._token)
@@ -28,7 +32,7 @@ async def budget_category(self: Client, b_id: str, c_id: str) -> Category:
     return category
 
 
-async def budget_categories(self: Client, b_id: str, c_id: str) -> list[Category]:
+async def budget_categories(self: "Client", b_id: str, c_id: str) -> list[Category]:
     endpoint = endpoint_budget_categories(b_id)
     try:
         categories = await self._do_request("GET", endpoint, None, self._token)
@@ -38,7 +42,7 @@ async def budget_categories(self: Client, b_id: str, c_id: str) -> list[Category
 
 
 async def budget_category_update(
-    self: Client, b_id: str, c_id: str, data: BudgetCategoryUpdateData
+    self: "Client", b_id: str, c_id: str, data: BudgetCategoryUpdateData
 ):
     endpoint = endpoint_budget_category(b_id, c_id)
     try:
@@ -49,7 +53,7 @@ async def budget_category_update(
 
 
 async def budget_category_delete(
-    self: Client,
+    self: "Client",
     b_id: str,
     c_id: str,
 ):

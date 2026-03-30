@@ -1,5 +1,5 @@
 import pytest
-from formatting_verbs import interp_str_verbs, S_VERB
+from pincher_sdk.formatting_verbs import interp_str_verbs, S_VERB
 
 # these tests use mock endpoints to test for
 # nested resources, as one might find in a REST API.

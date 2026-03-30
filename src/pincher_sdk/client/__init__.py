@@ -1,5 +1,9 @@
-from client._helpers import validate_base_url, check_token_expired, same_hostname
-from cache import Cache
+from ._helpers import (
+    validate_base_url,
+    check_token_expired,
+    same_hostname,
+)
+from pincher_sdk.cache import Cache
 from typing import Any
 import httpx
 import json

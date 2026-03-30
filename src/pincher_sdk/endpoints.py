@@ -1,4 +1,4 @@
-from src.formatting_verbs import interp_str_verbs
+from .formatting_verbs import interp_str_verbs
 
 """
 	This file contains all the endpoints used in this library for the Pincher API.

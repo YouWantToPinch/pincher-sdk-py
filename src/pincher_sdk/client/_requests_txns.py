@@ -1,20 +1,24 @@
-from client.types import Transaction, BudgetResourceKind
-from cache import ResourceCacheEntry
-from client import Client
-from endpoints import (
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from pincher_sdk import Client
+
+from pincher_sdk.types import Transaction, BudgetResourceKind
+from pincher_sdk.cache import ResourceCacheEntry
+from pincher_sdk.endpoints import (
     endpoint_budget_transactions,
     endpoint_budget_transaction,
     endpoint_budget_transaction_details,
     endpoint_budget_transactions_details,
 )
-from client.payloads import (
+from ._payloads import (
     BudgetTransactionCreateData,
     BudgetTransactionUpdateData,
 )
 
 
 async def budget_transaction_create(
-    self: Client, b_id: str, data: BudgetTransactionCreateData
+    self: "Client", b_id: str, data: BudgetTransactionCreateData
 ):
     endpoint = endpoint_budget_transactions(b_id)
     try:
@@ -28,7 +32,7 @@ async def budget_transaction_create(
         raise e
 
 
-async def budget_transaction(self: Client, b_id: str, t_id: str) -> Transaction:
+async def budget_transaction(self: "Client", b_id: str, t_id: str) -> Transaction:
     endpoint = endpoint_budget_transaction(b_id, t_id)
     try:
         transaction = await self._do_request("GET", endpoint, None, self._token)
@@ -37,7 +41,9 @@ async def budget_transaction(self: Client, b_id: str, t_id: str) -> Transaction:
     return transaction
 
 
-async def budget_transactions(self: Client, b_id: str, t_id: str) -> list[Transaction]:
+async def budget_transactions(
+    self: "Client", b_id: str, t_id: str
+) -> list[Transaction]:
     endpoint = endpoint_budget_transactions(b_id)
     try:
         transactions = await self._do_request("GET", endpoint, None, self._token)
@@ -46,7 +52,9 @@ async def budget_transactions(self: Client, b_id: str, t_id: str) -> list[Transa
     return transactions.data
 
 
-async def budget_transaction_details(self: Client, b_id: str, t_id: str) -> Transaction:
+async def budget_transaction_details(
+    self: "Client", b_id: str, t_id: str
+) -> Transaction:
     endpoint = endpoint_budget_transaction_details(b_id, t_id)
     try:
         transaction = await self._do_request("GET", endpoint, None, self._token)
@@ -56,7 +64,7 @@ async def budget_transaction_details(self: Client, b_id: str, t_id: str) -> Tran
 
 
 async def budget_transactions_details(
-    self: Client, b_id: str, t_id: str
+    self: "Client", b_id: str, t_id: str
 ) -> list[Transaction]:
     endpoint = endpoint_budget_transactions_details(b_id)
     try:
@@ -67,7 +75,7 @@ async def budget_transactions_details(
 
 
 async def budget_transaction_update(
-    self: Client, b_id: str, t_id: str, data: BudgetTransactionUpdateData
+    self: "Client", b_id: str, t_id: str, data: BudgetTransactionUpdateData
 ):
     endpoint = endpoint_budget_transaction(b_id, t_id)
     try:
@@ -79,7 +87,7 @@ async def budget_transaction_update(
 
 
 async def budget_transaction_delete(
-    self: Client,
+    self: "Client",
     b_id: str,
     t_id: str,
 ):

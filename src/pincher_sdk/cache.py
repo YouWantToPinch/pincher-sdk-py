@@ -1,6 +1,5 @@
-from client.types import Budget, BudgetResourceKind, BudgetResource
+from .types import Resource, Budget, BudgetResourceKind, BudgetResource
 from collections import OrderedDict
-from src.client.types import Resource
 import time
 from threading import Lock
 

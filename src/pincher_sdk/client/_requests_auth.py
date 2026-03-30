@@ -1,8 +1,12 @@
-from client import Client
-from .types import User
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from pincher_sdk import Client
+
+from pincher_sdk.types import User
 
 
-async def user_token_refresh(self: Client, with_user: bool = False) -> User | None:
+async def user_token_refresh(self: "Client", with_user: bool = False) -> User | None:
     try:
         if self._refresh_token == "":
             # TODO: log "Client directed to get new access token, but Refresh Token is empty."
@@ -24,7 +28,7 @@ async def user_token_refresh(self: Client, with_user: bool = False) -> User | No
         return User(data)
 
 
-async def user_token_revoke(self: Client):
+async def user_token_revoke(self: "Client"):
     try:
         if self._refresh_token == "":
             # TODO: log "Client directed to get new access token, but Refresh Token is empty."

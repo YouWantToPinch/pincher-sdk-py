@@ -1,6 +1,6 @@
 [project]
-name = "pincher-sdk-py"
-version = "0.1.0"
+name = "pincher_sdk"
+version = "0.1.0a1"
 description = "Library providing convenient access to the Pincher REST API from applications written in Python."
 readme = "README.md"
 requires-python = ">=3.13"
@@ -13,3 +13,17 @@ dependencies = [
 [tool.ruff.lint]
 select = ["E4", "E7", "E9", "F", "N"]
 
+[dependency-groups]
+dev = [
+    "setuptools>=82.0.1",
+    "twine>=6.2.0",
+    "wheel>=0.46.3",
+]
+
+[tool.pytest.ini_options]
+minversion = "9.0"
+testpaths = [
+  "tests",
+]
+python_files = ["test_*.py"]
+pythonpath = "src"

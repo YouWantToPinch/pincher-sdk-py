@@ -1,15 +1,19 @@
-from client.types import User
-from cache import ResourceCacheEntry
-from client import Client
-from endpoints import endpoint_login, endpoint_users
-from client.payloads import (
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from pincher_sdk import Client
+
+from pincher_sdk.types import User
+from pincher_sdk.cache import ResourceCacheEntry
+from pincher_sdk.endpoints import endpoint_login, endpoint_users
+from ._payloads import (
     UserCreateData,
     UserUpdateData,
     UserDeleteData,
 )
 
 
-async def user_create(self: Client, data: UserCreateData):
+async def user_create(self: "Client", data: UserCreateData):
     endpoint = endpoint_users()
     try:
         budget = await self._do_request("POST", endpoint, data._asdict(), self._token)
@@ -20,7 +24,7 @@ async def user_create(self: Client, data: UserCreateData):
     )
 
 
-async def user_login(self: Client) -> User:
+async def user_login(self: "Client") -> User:
     endpoint = endpoint_login()
     try:
         login = await self._do_request("POST", endpoint, None, self._token)
@@ -31,7 +35,7 @@ async def user_login(self: Client) -> User:
     return User(login)
 
 
-async def user_update(self: Client, data: UserUpdateData):
+async def user_update(self: "Client", data: UserUpdateData):
     endpoint = endpoint_users()
     try:
         await self._do_request("PUT", endpoint, data._asdict(), self._token)
@@ -40,7 +44,7 @@ async def user_update(self: Client, data: UserUpdateData):
         raise e
 
 
-async def user_delete(self: Client, data: UserDeleteData):
+async def user_delete(self: "Client", data: UserDeleteData):
     endpoint = endpoint_users()
     try:
         await self._do_request("DELETE", endpoint, data._asdict(), self._token)
