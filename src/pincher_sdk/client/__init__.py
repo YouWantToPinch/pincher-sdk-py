@@ -14,7 +14,7 @@ class Client(httpx.AsyncClient):
         self,
         cache: Cache,
         base_url: str,
-        auto_refresh: bool = False,
+        auto_refresh: bool = True,
         timeout: int = 10,
     ) -> None:
         super().__init__(base_url=base_url)
