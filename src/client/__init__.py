@@ -1,3 +1,4 @@
+from cache import Cache
 from typing import Any
 import httpx
 import json
@@ -8,6 +9,7 @@ from datetime import datetime, timezone
 class Client(httpx.AsyncClient):
     def __init__(
         self,
+        cache: Cache,
         base_url: str,
         timeout: int,
         cache_interval: int,
@@ -15,12 +17,17 @@ class Client(httpx.AsyncClient):
     ) -> None:
         super().__init__(base_url=base_url)
 
-        self.Cache = None
+        self.cache: Cache = cache
         self._base_url: str = ""
         self._parsed_base_url: httpx.URL | None = None
         self._token: str = ""
         self._refresh_token: str = ""
         self._auto_refresh: bool = auto_refresh
+
+        try:
+            self.set_base_url(base_url)
+        except Exception as e:
+            raise e
 
     # import methods from organized modules
     from ._requests_auth import user_token_refresh, user_token_revoke
