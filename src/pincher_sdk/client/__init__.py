@@ -85,6 +85,7 @@ class Client(httpx.AsyncClient):
         user_update,
         user_delete,
     )
+    from ._requests_state import get_server_ready
 
     def base_url(self) -> str:
         if not self._base_url:
