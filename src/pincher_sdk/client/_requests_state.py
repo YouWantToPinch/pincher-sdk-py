@@ -11,5 +11,5 @@ async def get_server_ready(self: "Client") -> bool:
     try:
         response = await self._do_request("GET", endpoint, None, handle_response=False)
         return 200 <= response.status_code < 300
-    except Exception as e:
-        raise e
+    except Exception:
+        return False
