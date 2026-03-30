@@ -18,8 +18,8 @@ async def budget_group_create(self: Client, b_id: str, data: BudgetGroupCreateDa
     self.cache.set(ResourceCacheEntry(group, endpoint), b_id)
 
 
-async def budget_group(self: Client, b_id: str, c_id: str) -> Group:
-    endpoint = endpoint_budget_group(b_id, c_id)
+async def budget_group(self: Client, b_id: str, g_id: str) -> Group:
+    endpoint = endpoint_budget_group(b_id, g_id)
     try:
         group = await self._do_request("GET", endpoint, None, self._token)
     except Exception as e:
@@ -27,7 +27,7 @@ async def budget_group(self: Client, b_id: str, c_id: str) -> Group:
     return group
 
 
-async def budget_groups(self: Client, b_id: str, c_id: str) -> list[Group]:
+async def budget_groups(self: Client, b_id: str, g_id: str) -> list[Group]:
     endpoint = endpoint_budget_groups(b_id)
     try:
         groups = await self._do_request("GET", endpoint, None, self._token)
@@ -37,12 +37,12 @@ async def budget_groups(self: Client, b_id: str, c_id: str) -> list[Group]:
 
 
 async def budget_group_update(
-    self: Client, b_id: str, c_id: str, data: BudgetGroupUpdateData
+    self: Client, b_id: str, g_id: str, data: BudgetGroupUpdateData
 ):
-    endpoint = endpoint_budget_group(b_id, c_id)
+    endpoint = endpoint_budget_group(b_id, g_id)
     try:
         await self._do_request("PUT", endpoint, data, self._token)
-        self.budget_group(b_id, c_id)  # type: ignore
+        self.budget_group(b_id, g_id)  # type: ignore
     except Exception as e:
         raise e
 
@@ -50,11 +50,11 @@ async def budget_group_update(
 async def budget_group_delete(
     self: Client,
     b_id: str,
-    c_id: str,
+    g_id: str,
 ):
-    endpoint = endpoint_budget_group(b_id, c_id)
+    endpoint = endpoint_budget_group(b_id, g_id)
     try:
         await self._do_request("DELETE", endpoint, None, self._token)
-        self.cache.delete(b_id, c_id, BudgetResourceKind.GROUP)
+        self.cache.delete(b_id, g_id, BudgetResourceKind.GROUP)
     except Exception as e:
         raise e

@@ -18,8 +18,8 @@ async def budget_payee_create(self: Client, b_id: str, data: BudgetPayeeCreateDa
     self.cache.set(ResourceCacheEntry(payee, endpoint), b_id)
 
 
-async def budget_payee(self: Client, b_id: str, c_id: str) -> Payee:
-    endpoint = endpoint_budget_payee(b_id, c_id)
+async def budget_payee(self: Client, b_id: str, p_id: str) -> Payee:
+    endpoint = endpoint_budget_payee(b_id, p_id)
     try:
         payee = await self._do_request("GET", endpoint, None, self._token)
     except Exception as e:
@@ -27,7 +27,7 @@ async def budget_payee(self: Client, b_id: str, c_id: str) -> Payee:
     return payee
 
 
-async def budget_payees(self: Client, b_id: str, c_id: str) -> list[Payee]:
+async def budget_payees(self: Client, b_id: str, p_id: str) -> list[Payee]:
     endpoint = endpoint_budget_payees(b_id)
     try:
         payees = await self._do_request("GET", endpoint, None, self._token)
@@ -37,12 +37,12 @@ async def budget_payees(self: Client, b_id: str, c_id: str) -> list[Payee]:
 
 
 async def budget_payee_update(
-    self: Client, b_id: str, c_id: str, data: BudgetPayeeUpdateData
+    self: Client, b_id: str, p_id: str, data: BudgetPayeeUpdateData
 ):
-    endpoint = endpoint_budget_payee(b_id, c_id)
+    endpoint = endpoint_budget_payee(b_id, p_id)
     try:
         await self._do_request("PUT", endpoint, data, self._token)
-        self.budget_payee(b_id, c_id)  # type: ignore
+        self.budget_payee(b_id, p_id)  # type: ignore
     except Exception as e:
         raise e
 
@@ -50,12 +50,12 @@ async def budget_payee_update(
 async def budget_payee_delete(
     self: Client,
     b_id: str,
-    c_id: str,
+    p_id: str,
     data: BudgetPayeeDeleteData,
 ):
-    endpoint = endpoint_budget_payee(b_id, c_id)
+    endpoint = endpoint_budget_payee(b_id, p_id)
     try:
         await self._do_request("DELETE", endpoint, data, self._token)
-        self.cache.delete(b_id, c_id, BudgetResourceKind.PAYEE)
+        self.cache.delete(b_id, p_id, BudgetResourceKind.PAYEE)
     except Exception as e:
         raise e
