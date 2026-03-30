@@ -91,7 +91,7 @@ class Client(httpx.AsyncClient):
                 break
             elif should_retry:
                 try:
-                    self.user_token_refresh()
+                    await self.user_token_refresh()
                     current_token = self._token
                     should_retry = False
                     continue
