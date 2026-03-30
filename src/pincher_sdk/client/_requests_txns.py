@@ -11,7 +11,7 @@ from pincher_sdk.endpoints import (
     endpoint_budget_transaction_details,
     endpoint_budget_transactions_details,
 )
-from ._payloads import (
+from pincher_sdk.payloads import (
     BudgetTransactionCreateData,
     BudgetTransactionUpdateData,
 )

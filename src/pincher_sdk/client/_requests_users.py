@@ -6,7 +6,7 @@ if TYPE_CHECKING:
 from pincher_sdk.types import User
 from pincher_sdk.cache import ResourceCacheEntry
 from pincher_sdk.endpoints import endpoint_login, endpoint_users
-from ._payloads import (
+from pincher_sdk.payloads import (
     UserCreateData,
     UserUpdateData,
     UserDeleteData,

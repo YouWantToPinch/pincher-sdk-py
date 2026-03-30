@@ -10,7 +10,7 @@ from pincher_sdk.endpoints import (
     endpoint_budgets,
     endpoint_budget_month,
 )
-from ._payloads import (
+from pincher_sdk.payloads import (
     BudgetCreateData,
     BudgetUpdateData,
 )
