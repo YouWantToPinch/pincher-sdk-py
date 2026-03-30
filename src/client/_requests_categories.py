@@ -48,15 +48,6 @@ async def budget_category_update(
         raise e
 
 
-async def budget_category_restore(self: Client, b_id: str, c_id: str):
-    endpoint = endpoint_budget_category(b_id, c_id)
-    try:
-        await self._do_request("PATCH", endpoint, None, self._token)
-        self.budget_category(b_id, c_id)  # type: ignore
-    except Exception as e:
-        raise e
-
-
 async def budget_category_delete(
     self: Client,
     b_id: str,

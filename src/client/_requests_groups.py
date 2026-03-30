@@ -5,6 +5,7 @@ from endpoints import endpoint_budget_groups, endpoint_budget_group
 from client.payloads import (
     BudgetGroupCreateData,
     BudgetGroupUpdateData,
+    BudgetPayeeDeleteData,
 )
 
 
@@ -41,15 +42,6 @@ async def budget_group_update(
     endpoint = endpoint_budget_group(b_id, c_id)
     try:
         await self._do_request("PUT", endpoint, data, self._token)
-        self.budget_group(b_id, c_id)  # type: ignore
-    except Exception as e:
-        raise e
-
-
-async def budget_group_restore(self: Client, b_id: str, c_id: str):
-    endpoint = endpoint_budget_group(b_id, c_id)
-    try:
-        await self._do_request("PATCH", endpoint, None, self._token)
         self.budget_group(b_id, c_id)  # type: ignore
     except Exception as e:
         raise e
