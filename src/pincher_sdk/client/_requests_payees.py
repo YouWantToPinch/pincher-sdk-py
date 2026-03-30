@@ -6,7 +6,7 @@ if TYPE_CHECKING:
 from pincher_sdk.types import Payee, BudgetResourceKind
 from pincher_sdk.cache import ResourceCacheEntry
 from pincher_sdk.endpoints import endpoint_budget_payees, endpoint_budget_payee
-from ._payloads import (
+from pincher_sdk.payloads import (
     BudgetPayeeCreateData,
     BudgetPayeeUpdateData,
     BudgetPayeeDeleteData,
