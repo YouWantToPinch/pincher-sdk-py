@@ -24,6 +24,9 @@ class BudgetCreateData(NamedTuple):
     notes: str
 
 
+BudgetUpdateData = BudgetCreateData
+
+
 class BudgetAccountType(Enum):
     ON_BUDGET = "ON_BUDGET"
     OFF_BUDGET = "OFF_BUDGET"
