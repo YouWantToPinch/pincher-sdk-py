@@ -19,9 +19,11 @@ async def budget_transaction_create(
     endpoint = endpoint_budget_transactions(b_id)
     try:
         transaction = await self._do_request("POST", endpoint, data, self._token)
+        self.cache.set(ResourceCacheEntry(transaction, endpoint), b_id)
+        # retrieve & cache the detailed version as well
+        self.budget_transaction_details(b_id, str(transaction.id))  # type: ignore
     except Exception as e:
         raise e
-    self.cache.set(ResourceCacheEntry(transaction, endpoint), b_id)
 
 
 async def budget_transaction(self: Client, b_id: str, t_id: str) -> Transaction:
