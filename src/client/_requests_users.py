@@ -1,0 +1,48 @@
+from client.types import User
+from cache import ResourceCacheEntry
+from client import Client
+from endpoints import endpoint_login, endpoint_users
+from client.payloads import (
+    UserCreateData,
+    UserUpdateData,
+    UserDeleteData,
+)
+
+
+async def user_create(self: Client, data: UserCreateData):
+    endpoint = endpoint_users()
+    try:
+        budget = await self._do_request("POST", endpoint, data._asdict(), self._token)
+    except Exception as e:
+        raise e
+    self.cache.set(
+        ResourceCacheEntry(budget, endpoint),
+    )
+
+
+async def user_login(self: Client) -> User:
+    endpoint = endpoint_login()
+    try:
+        login = await self._do_request("POST", endpoint, None, self._token)
+        self._token = login.token
+        self._refresh_token = login.refresh_token
+    except Exception as e:
+        raise e
+    return User(login)
+
+
+async def user_update(self: Client, data: UserUpdateData):
+    endpoint = endpoint_users()
+    try:
+        await self._do_request("PUT", endpoint, data._asdict(), self._token)
+        self.budget_budget()  # type: ignore
+    except Exception as e:
+        raise e
+
+
+async def user_delete(self: Client, data: UserDeleteData):
+    endpoint = endpoint_users()
+    try:
+        await self._do_request("DELETE", endpoint, data._asdict(), self._token)
+    except Exception as e:
+        raise e
