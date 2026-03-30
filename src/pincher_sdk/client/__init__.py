@@ -1,3 +1,4 @@
+from pincher_sdk.endpoints import default_base_url
 from ._helpers import (
     validate_base_url,
     check_token_expired,
@@ -13,7 +14,7 @@ class Client(httpx.AsyncClient):
     def __init__(
         self,
         cache: Cache,
-        base_url: str,
+        base_url: str = default_base_url,
         auto_refresh: bool = True,
         timeout: int = 10,
     ) -> None:
@@ -87,7 +88,7 @@ class Client(httpx.AsyncClient):
     )
     from ._requests_state import get_server_ready
 
-    def base_url(self) -> str:
+    def get_base_url(self) -> str:
         if not self._base_url:
             return ""
         return self._base_url
@@ -111,7 +112,7 @@ class Client(httpx.AsyncClient):
         json_data: dict | None,
         token: str = "",
         handle_response: bool = True,
-    ) -> Any | httpx.Response:
+    ) -> Any:
         url = self._resolve_url("/api" + destination)
         if not url:
             return None
@@ -130,7 +131,7 @@ class Client(httpx.AsyncClient):
 
             request = self.build_request(
                 method,
-                destination,
+                url,
                 json=json_data,
                 headers=headers,
                 timeout=self.timeout,
@@ -192,10 +193,10 @@ class Client(httpx.AsyncClient):
 
         u = httpx.URL(destination)
 
-        # Reject scheme-less URLs and any provided scheme
-        if u.scheme != "" or u.netloc != "":
+        # Reject scheme-less URLs (//host/path) and any provided scheme
+        if u.scheme != "" or u.host != "":
             if same_hostname(u, self._parsed_base_url):
                 return str(u)
-            raise Exception(f"refusing external URL host {u.netloc!r}")
+            raise Exception(f"refusing external URL host {u.host}")
 
         return str(self._parsed_base_url.join(destination))
