@@ -10,7 +10,7 @@ async def user_token_refresh(self: "Client", with_user: bool = False) -> User | 
     try:
         if self._refresh_token == "":
             # TODO: log "Client directed to get new access token, but Refresh Token is empty."
-            raise Exception("refresh token is empty")
+            raise ValueError("refresh token is empty")
     except Exception as e:
         raise e
 
@@ -32,7 +32,7 @@ async def user_token_revoke(self: "Client"):
     try:
         if self._refresh_token == "":
             # TODO: log "Client directed to get new access token, but Refresh Token is empty."
-            raise Exception("refresh token is empty")
+            raise ValueError("refresh token is empty")
     except Exception as e:
         raise e
 
