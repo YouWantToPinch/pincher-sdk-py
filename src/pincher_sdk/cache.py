@@ -17,7 +17,7 @@ class ResourceCacheEntry:
         self.protected = protected
 
 
-type ResourceCache = OrderedDict[str, tuple[ResourceCacheEntry, float]]
+type ResourceCache = OrderedDict[str, ResourceCacheEntry]
 
 
 class BudgetCache:
@@ -51,7 +51,7 @@ class BudgetCache:
 
 class Cache:
     def __init__(self, capacity: int = 100, ttl_seconds: int = 60 * 5):
-        self.entries: OrderedDict[str, tuple[BudgetCache, float]] = OrderedDict()
+        self.entries: OrderedDict[str, BudgetCache] = OrderedDict()
         self.capacity = capacity
         self.ttl = ttl_seconds
         self.lock = Lock()
@@ -66,10 +66,10 @@ class Cache:
             if budget_id not in self.entries:
                 return None
 
-            budget_cache, budget_cache_exp_time = self.entries[budget_id]
+            budget_cache = self.entries[budget_id]
 
             # Check if expired
-            if time.time() > budget_cache_exp_time:
+            if time.time() > budget_cache.entry.created_at + self.ttl:
                 del self.entries[budget_id]
                 return None
 
@@ -82,8 +82,8 @@ class Cache:
             subcache = budget_cache.get_subcache(resource_kind)
             if subcache is None:
                 return
-            entry, entry_exp_time = subcache[resource_id]
-            if time.time() > entry_exp_time:
+            entry = subcache[resource_id]
+            if time.time() > entry.created_at + self.ttl:
                 del subcache[resource_id]
                 return None
             return entry.data
@@ -93,12 +93,11 @@ class Cache:
         entry: ResourceCacheEntry,
         budget_id: str = "",
     ) -> None:
-        exp_time = time.time() + self.ttl
         if isinstance(entry, Budget):
             with self.lock:
                 if str(entry.id) in self.entries:
                     self.entries.move_to_end(str(entry.id))
-                self.entries[str(entry.id)] = (BudgetCache(entry), exp_time)
+                self.entries[str(entry.id)] = BudgetCache(entry)
 
                 if len(self.entries) > self.capacity:
                     self.entries.popitem(last=False)
@@ -111,7 +110,7 @@ class Cache:
 
                 self.entries.move_to_end(budget_id)
 
-                budget_cache, budget_cache_exp_time = self.entries[budget_id]
+                budget_cache = self.entries[budget_id]
                 if (
                     not isinstance(entry.data, BudgetResource)
                     or entry.data.kind is None
@@ -121,7 +120,7 @@ class Cache:
                 if subcache is None:
                     return
 
-                subcache[(str(entry.data.id))] = (entry, exp_time)
+                subcache[(str(entry.data.id))] = entry
 
                 if len(subcache) > self.capacity:
                     self.entries.popitem(last=False)
@@ -145,7 +144,7 @@ class Cache:
                 self.entries.pop(resource_id)
                 return
             if resource_id and resource_kind is not BudgetResourceKind.NONE:
-                budget_cache, budget_cache_exp_time = self.entries[budget_id]
+                budget_cache = self.entries[budget_id]
                 subcache = budget_cache.get_subcache(resource_kind)
                 if subcache is None:
                     return
