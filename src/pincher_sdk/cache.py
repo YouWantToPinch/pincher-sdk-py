@@ -77,6 +77,11 @@ class Cache:
     ) -> Resource | list[Resource] | None:
         with self.lock:
             if budget_id not in self.entries:
+                if not budget_id and get_all:
+                    return [
+                        budget_cache.entry.data
+                        for budget_cache in self.entries.values()
+                    ]
                 return None
 
             budget_cache = self.entries[budget_id]
