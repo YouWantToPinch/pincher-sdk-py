@@ -21,8 +21,9 @@ type ResourceCache = OrderedDict[str, ResourceCacheEntry]
 
 
 class BudgetCache:
-    def __init__(self, budget: ResourceCacheEntry) -> None:
+    def __init__(self, budget: ResourceCacheEntry, ttl_seconds: int = 60 * 5) -> None:
         self.entry: ResourceCacheEntry = budget
+        self.ttl: int = ttl_seconds
 
         self.account_cache: ResourceCache = OrderedDict()
         self.payee_cache: ResourceCache = OrderedDict()
@@ -31,22 +32,33 @@ class BudgetCache:
         self.txn_cache: ResourceCache = OrderedDict()
         self.txn_details_cache: ResourceCache = OrderedDict()
 
-    def get_subcache(self, cache: BudgetResourceKind) -> ResourceCache | None:
+    def get_subcache(
+        self, cache: BudgetResourceKind, reap: bool = False
+    ) -> ResourceCache | None:
+        subcache: ResourceCache | None = None
         match cache:
             case BudgetResourceKind.ACCOUNT:
-                return self.account_cache
+                subcache = self.account_cache
             case BudgetResourceKind.PAYEE:
-                return self.payee_cache
+                subcache = self.payee_cache
             case BudgetResourceKind.GROUP:
-                return self.group_cache
+                subcache = self.group_cache
             case BudgetResourceKind.CATEGORY:
-                return self.category_cache
+                subcache = self.category_cache
             case BudgetResourceKind.TRANSACTION:
-                return self.txn_cache
+                subcache = self.txn_cache
             case BudgetResourceKind.TRANSACTION_DETAIL:
-                return self.txn_details_cache
+                subcache = self.txn_details_cache
             case _:
                 return None
+        if subcache is None:
+            return
+        if not reap:
+            return subcache
+        for key, entry in subcache.items():
+            if entry.created_at > time.time() + self.ttl:
+                del subcache[key]
+        return subcache
 
 
 class Cache:
@@ -61,7 +73,8 @@ class Cache:
         budget_id: str,
         resource_id: str = "",
         resource_kind: BudgetResourceKind = BudgetResourceKind.NONE,
-    ) -> Resource | None:
+        get_all: bool = False,
+    ) -> Resource | list[Resource] | None:
         with self.lock:
             if budget_id not in self.entries:
                 return None
@@ -79,9 +92,13 @@ class Cache:
                 return budget_cache.entry.data
             if not resource_id:
                 return None
-            subcache = budget_cache.get_subcache(resource_kind)
+            subcache = budget_cache.get_subcache(resource_kind, reap=get_all)
             if subcache is None:
-                return
+                return None
+            if get_all:
+                entries = subcache.values()
+                data: list[Resource] = [entry.data for entry in entries]
+                return data
             entry = subcache[resource_id]
             if time.time() > entry.created_at + self.ttl:
                 del subcache[resource_id]
@@ -97,7 +114,7 @@ class Cache:
             with self.lock:
                 if str(entry.id) in self.entries:
                     self.entries.move_to_end(str(entry.id))
-                self.entries[str(entry.id)] = BudgetCache(entry)
+                self.entries[str(entry.id)] = BudgetCache(entry, self.ttl)
 
                 if len(self.entries) > self.capacity:
                     self.entries.popitem(last=False)
