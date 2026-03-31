@@ -17,32 +17,21 @@ class ResourceCacheEntry:
         self.protected = protected
 
 
+type ResourceCache = OrderedDict[str, tuple[ResourceCacheEntry, float]]
+
+
 class BudgetCache:
     def __init__(self, budget: ResourceCacheEntry) -> None:
         self.entry: ResourceCacheEntry = budget
 
-        self.account_cache: OrderedDict[str, tuple[ResourceCacheEntry, float]] = (
-            OrderedDict()
-        )
-        self.payee_cache: OrderedDict[str, tuple[ResourceCacheEntry, float]] = (
-            OrderedDict()
-        )
-        self.group_cache: OrderedDict[str, tuple[ResourceCacheEntry, float]] = (
-            OrderedDict()
-        )
-        self.category_cache: OrderedDict[str, tuple[ResourceCacheEntry, float]] = (
-            OrderedDict()
-        )
-        self.txn_cache: OrderedDict[str, tuple[ResourceCacheEntry, float]] = (
-            OrderedDict()
-        )
-        self.txn_details_cache: OrderedDict[str, tuple[ResourceCacheEntry, float]] = (
-            OrderedDict()
-        )
+        self.account_cache: ResourceCache = OrderedDict()
+        self.payee_cache: ResourceCache = OrderedDict()
+        self.group_cache: ResourceCache = OrderedDict()
+        self.category_cache: ResourceCache = OrderedDict()
+        self.txn_cache: ResourceCache = OrderedDict()
+        self.txn_details_cache: ResourceCache = OrderedDict()
 
-    def get_subcache(
-        self, cache: BudgetResourceKind
-    ) -> OrderedDict[str, tuple[ResourceCacheEntry, float]] | None:
+    def get_subcache(self, cache: BudgetResourceKind) -> ResourceCache | None:
         match cache:
             case BudgetResourceKind.ACCOUNT:
                 return self.account_cache
