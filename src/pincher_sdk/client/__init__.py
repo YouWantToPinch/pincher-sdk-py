@@ -88,6 +88,9 @@ class Client(httpx.AsyncClient):
     )
     from ._requests_state import get_server_ready
 
+    async def close(self) -> None:
+        await self.aclose()
+
     def get_base_url(self) -> str:
         if not self._base_url:
             return ""
