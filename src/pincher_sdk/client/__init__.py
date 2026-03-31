@@ -164,6 +164,9 @@ class Client(httpx.AsyncClient):
             return response
         try:
             return self._handle_response(response)
+        except RuntimeError as e:
+            print(e)
+            return None
         except Exception as e:
             raise e
 
