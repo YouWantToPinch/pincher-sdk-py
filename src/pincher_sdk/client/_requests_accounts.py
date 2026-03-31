@@ -33,8 +33,10 @@ async def budget_account(self: "Client", b_id: str, a_id: str) -> Account:
     return account
 
 
-async def budget_accounts(self: "Client", b_id: str, a_id: str) -> list[Account]:
-    endpoint = endpoint_budget_accounts(b_id)
+async def budget_accounts(
+    self: "Client", b_id: str, a_id: str, **kwargs
+) -> list[Account]:
+    endpoint = endpoint_budget_accounts(b_id, **kwargs)
     try:
         accounts = await self._do_request("GET", endpoint, None, self._token)
     except Exception as e:

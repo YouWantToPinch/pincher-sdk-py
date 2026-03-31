@@ -42,9 +42,9 @@ async def budget_transaction(self: "Client", b_id: str, t_id: str) -> Transactio
 
 
 async def budget_transactions(
-    self: "Client", b_id: str, t_id: str
+    self: "Client", b_id: str, t_id: str, **kwargs
 ) -> list[Transaction]:
-    endpoint = endpoint_budget_transactions(b_id)
+    endpoint = endpoint_budget_transactions(b_id, **kwargs)
     try:
         transactions = await self._do_request("GET", endpoint, None, self._token)
     except Exception as e:
@@ -64,9 +64,9 @@ async def budget_transaction_details(
 
 
 async def budget_transactions_details(
-    self: "Client", b_id: str, t_id: str
+    self: "Client", b_id: str, t_id: str, **kwargs
 ) -> list[Transaction]:
-    endpoint = endpoint_budget_transactions_details(b_id)
+    endpoint = endpoint_budget_transactions_details(b_id, **kwargs)
     try:
         transactions = await self._do_request("GET", endpoint, None, self._token)
     except Exception as e:

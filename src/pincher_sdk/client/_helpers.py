@@ -46,3 +46,24 @@ def check_token_expired(token: str) -> bool:
     except Exception:
         # TODO: log "invalid claims"
         return True
+
+
+type Queries = dict[str, str | list[str]] | None
+
+
+def generate_query_string(url_queries: Queries) -> str:
+    if not url_queries:
+        return ""
+    query_string = "?"
+    first = True
+    for k, v in url_queries:
+        if not first:
+            query_string += "&"
+        else:
+            first = False
+        query_string += k + "="
+        if isinstance(v, list[str]):
+            query_string += ",".join(v)
+        else:
+            query_string += v
+    return query_string
