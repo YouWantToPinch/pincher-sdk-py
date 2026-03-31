@@ -30,8 +30,8 @@ async def budget_group(self: "Client", b_id: str, g_id: str) -> Group:
     return group
 
 
-async def budget_groups(self: "Client", b_id: str, g_id: str) -> list[Group]:
-    endpoint = endpoint_budget_groups(b_id)
+async def budget_groups(self: "Client", b_id: str, g_id: str, **kwargs) -> list[Group]:
+    endpoint = endpoint_budget_groups(b_id, **kwargs)
     try:
         groups = await self._do_request("GET", endpoint, None, self._token)
     except Exception as e:

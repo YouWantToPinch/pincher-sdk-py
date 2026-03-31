@@ -1,4 +1,5 @@
-from typing import TYPE_CHECKING
+from pincher_sdk.client._helpers import queries
+from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
     from pincher_sdk import Client
@@ -31,8 +32,8 @@ async def budget_payee(self: "Client", b_id: str, p_id: str) -> Payee:
     return payee
 
 
-async def budget_payees(self: "Client", b_id: str, p_id: str) -> list[Payee]:
-    endpoint = endpoint_budget_payees(b_id)
+async def budget_payees(self: "Client", b_id: str, p_id: str, **kwargs) -> list[Payee]:
+    endpoint = endpoint_budget_payees(b_id, **kwargs)
     try:
         payees = await self._do_request("GET", endpoint, None, self._token)
     except Exception as e:

@@ -32,8 +32,10 @@ async def budget_category(self: "Client", b_id: str, c_id: str) -> Category:
     return category
 
 
-async def budget_categories(self: "Client", b_id: str, c_id: str) -> list[Category]:
-    endpoint = endpoint_budget_categories(b_id)
+async def budget_categories(
+    self: "Client", b_id: str, c_id: str, **kwargs
+) -> list[Category]:
+    endpoint = endpoint_budget_categories(b_id, **kwargs)
     try:
         categories = await self._do_request("GET", endpoint, None, self._token)
     except Exception as e:

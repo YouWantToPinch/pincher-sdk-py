@@ -1,3 +1,4 @@
+from pincher_sdk.client._helpers import generate_query_string
 from .formatting_verbs import interp_str_verbs
 
 """
@@ -91,16 +92,16 @@ def endpoint_budget_capital(b_id: str) -> str:
     return interp_str_verbs(URL_BUDGET_CAPITAL, b_id)
 
 
-def endpoint_budget_members(b_id: str) -> str:
-    return interp_str_verbs(URL_BUDGET_MEMBERS, b_id)
+def endpoint_budget_members(b_id: str, **kwargs) -> str:
+    return interp_str_verbs(URL_BUDGET_MEMBERS, b_id) + generate_query_string(kwargs)
 
 
 def endpoint_budget_member(b_id: str, m_id: str) -> str:
     return interp_str_verbs(URL_BUDGET_MEMBER, b_id, m_id)
 
 
-def endpoint_budget_groups(b_id: str) -> str:
-    return interp_str_verbs(URL_BUDGET_GROUPS, b_id)
+def endpoint_budget_groups(b_id: str, **kwargs) -> str:
+    return interp_str_verbs(URL_BUDGET_GROUPS, b_id) + generate_query_string(kwargs)
 
 
 def endpoint_budget_group(b_id: str, g_id: str) -> str:
@@ -115,16 +116,16 @@ def endpoint_budget_category(b_id: str, c_id: str) -> str:
     return interp_str_verbs(URL_BUDGET_CATEGORY, b_id, c_id)
 
 
-def endpoint_budget_payees(b_id: str) -> str:
-    return interp_str_verbs(URL_BUDGET_PAYEES, b_id)
+def endpoint_budget_payees(b_id: str, **kwargs) -> str:
+    return interp_str_verbs(URL_BUDGET_PAYEES, b_id) + generate_query_string(kwargs)
 
 
 def endpoint_budget_payee(b_id: str, p_id: str) -> str:
     return interp_str_verbs(URL_BUDGET_PAYEE, b_id, p_id)
 
 
-def endpoint_budget_accounts(b_id: str) -> str:
-    return interp_str_verbs(URL_BUDGET_ACCOUNTS, b_id)
+def endpoint_budget_accounts(b_id: str, **kwargs) -> str:
+    return interp_str_verbs(URL_BUDGET_ACCOUNTS, b_id) + generate_query_string(kwargs)
 
 
 def endpoint_budget_account(b_id: str, a_id: str) -> str:
@@ -135,24 +136,30 @@ def endpoint_budget_account_capital(b_id: str, a_id: str) -> str:
     return interp_str_verbs(URL_BUDGET_ACCOUNT_CAPITAL, b_id, a_id)
 
 
-def endpoint_budget_transactions(b_id: str) -> str:
-    return interp_str_verbs(URL_BUDGET_TRANSACTIONS, b_id)
+def endpoint_budget_transactions(b_id: str, **kwargs) -> str:
+    return interp_str_verbs(URL_BUDGET_TRANSACTIONS, b_id) + generate_query_string(
+        kwargs
+    )
 
 
 def endpoint_budget_transaction(b_id: str, t_id: str) -> str:
     return interp_str_verbs(URL_BUDGET_TRANSACTION, b_id, t_id)
 
 
-def endpoint_budget_transactions_details(b_id: str) -> str:
-    return interp_str_verbs(URL_BUDGET_TRANSACTIONS_DETAILS, b_id)
+def endpoint_budget_transactions_details(b_id: str, **kwargs) -> str:
+    return interp_str_verbs(
+        URL_BUDGET_TRANSACTIONS_DETAILS, b_id
+    ) + generate_query_string(kwargs)
 
 
 def endpoint_budget_transaction_details(b_id: str, t_id: str) -> str:
     return interp_str_verbs(URL_BUDGET_TRANSACTION_DETAILS, b_id, t_id)
 
 
-def endpoint_budget_transaction_splits(b_id: str, t_id: str) -> str:
-    return interp_str_verbs(URL_BUDGET_TRANSACTION_SPLITS, b_id, t_id)
+def endpoint_budget_transaction_splits(b_id: str, t_id: str, **kwargs) -> str:
+    return interp_str_verbs(
+        URL_BUDGET_TRANSACTION_SPLITS, b_id, t_id
+    ) + generate_query_string(kwargs)
 
 
 def endpoint_budget_month(b_id: str, m_id: str) -> str:
